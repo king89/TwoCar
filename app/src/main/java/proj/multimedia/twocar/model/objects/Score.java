@@ -5,12 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import proj.multimedia.twocar.model.Updatable;
+import proj.multimedia.twocar.model.Renderable;
 
 /**
  * Created by KinG on 9/22/2015.
  */
-public class Score extends Updatable {
+public class Score extends Renderable {
     int mScore = 0;
 
     public Score(Context context, float x, float y, int score) {
@@ -20,9 +20,9 @@ public class Score extends Updatable {
         this.mScore = score;
     }
 
-    @Override
-    public void update(double timeElapsed) {
-        mScore++;
+
+    public void addScore(int n){
+        mScore += n;
     }
 
     @Override

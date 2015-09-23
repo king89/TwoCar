@@ -13,12 +13,19 @@ public abstract class Renderable {
     protected Rect mRect;
     protected Context mContext;
 
-    public Renderable(Context context){
+    public Renderable(Context context) {
         mContext = context;
+    }
+    public Renderable(Context context, float x, float y) {
+        mContext = context;
+        this.x = x;
+        this.y = y;
     }
     public abstract void draw(Canvas c);
 
-    public Rect getmRect(){
+    public void update(double timeElapsed){};
+
+    public Rect getmRect() {
         return mRect;
     }
 

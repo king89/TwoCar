@@ -2,9 +2,11 @@ package proj.multimedia.twocar.scene;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 import proj.multimedia.twocar.model.World;
+import proj.multimedia.twocar.util.ResourcesManager;
 import proj.multimedia.twocar.util.SceneManager;
 
 /**
@@ -37,4 +39,6 @@ public abstract class BaseScene {
     public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height){}
 
     public abstract void render(Canvas c, double timeElapsed);
+
+    public boolean onTouchEvent(MotionEvent event){return  false;};
 }

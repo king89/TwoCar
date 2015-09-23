@@ -15,7 +15,6 @@ public class World {
 
 
     protected List<Renderable> mRenderableList;
-    protected List<Updatable> mUpdatableList;
     protected Renderable mBackground;
 
     protected Context mContext;
@@ -40,8 +39,8 @@ public class World {
 
     public void update(double timeElapsed) {
         //Draw Other objects
-        if (mUpdatableList != null) {
-            for (Updatable r : mUpdatableList) {
+        if (mRenderableList != null) {
+            for (Renderable r : mRenderableList) {
                 r.update(timeElapsed);
             }
         }
@@ -51,18 +50,17 @@ public class World {
         mBackground = bg;
     }
 
-    public void addUpdatableObject(Updatable obj){
-        if (mUpdatableList == null){
-            mUpdatableList = new ArrayList<>();
-        }
-        mUpdatableList.add(obj);
-        addRenderableObject(obj);
-    }
 
     public void addRenderableObject(Renderable obj){
         if (mRenderableList == null){
             mRenderableList = new ArrayList<>();
         }
         mRenderableList.add(obj);
+    }
+
+    public void removerObject(Renderable obj){
+        if (mRenderableList != null){
+            mRenderableList.remove(obj);
+        }
     }
 }

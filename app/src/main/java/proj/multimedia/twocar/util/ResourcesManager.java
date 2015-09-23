@@ -1,5 +1,8 @@
 package proj.multimedia.twocar.util;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 
 
@@ -15,4 +18,15 @@ public class ResourcesManager {
         return INSTANCE;
     }
 
+
+    public Bitmap getBitmapFromAsset(Context context, String fileName){
+        try {
+            Bitmap bm = BitmapFactory.decodeStream(context.getAssets().open(fileName));
+            return bm;
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

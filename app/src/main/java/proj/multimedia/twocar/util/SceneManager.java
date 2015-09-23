@@ -43,7 +43,10 @@ public class SceneManager {
     }
 
     public BaseScene createGameScene(Context context){
-        return new GameScene(context);
+        BaseScene scene = new GameScene(context);
+        currentScene = scene;
+        currentSceneType = SceneType.SCENE_GAME;
+        return scene;
     }
 
 }

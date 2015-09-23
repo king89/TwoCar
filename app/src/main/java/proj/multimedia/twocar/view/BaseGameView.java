@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.SystemClock;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -43,13 +44,24 @@ public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback 
         mThread.quit();
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        BaseScene scene = mSceneManager.getCurrentScene();
+        if (scene != null) {
+            return scene.onTouchEvent(event);
+        } else {
+            return super.onTouchEvent(event);
+        }
+    }
+
     public void pause() {
         mThread.pause();
     }
 
     public void resume() {
-        if (mThread != null && mThread.isAlive())
-        mThread.unPause();
+        if (mThread != null && mThread.isAlive()) {
+            mThread.unPause();
+        }
     }
 
     class MainThread extends Thread {
@@ -99,9 +111,10 @@ public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback 
             }
         }
 
-        public void pause(){
+        public void pause() {
             mPause = true;
         }
+
         private void render(Rect dirty, double timeElapsed) {
             Canvas c = mSurfaceHolder.lockCanvas(null);
             mScene.render(c, timeElapsed);
