@@ -16,6 +16,8 @@ public abstract class BaseScene {
     protected World mWorld;
     protected SceneManager.SceneType mSceneType;
     protected Context mContext;
+    protected boolean mIsGameOver;
+
     public BaseScene(Context context) {
         mContext = context;
         createWorld();
@@ -24,6 +26,9 @@ public abstract class BaseScene {
         addObjectsToTheWorld();
     }
 
+    public boolean getGameOver(){
+        return mIsGameOver;
+    }
     protected abstract void addObjectsToTheWorld();
 
     protected abstract void createWorld();

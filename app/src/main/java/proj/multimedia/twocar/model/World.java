@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import proj.multimedia.twocar.model.objects.BackGround;
+import proj.multimedia.twocar.model.objects.Car;
+import proj.multimedia.twocar.model.objects.Coin;
+import proj.multimedia.twocar.model.objects.Obstacle;
 
 /**
  * Created by KinG on 9/22/2015.
@@ -79,5 +82,31 @@ public class World {
 
     public void addToRemoveList(Renderable obj) {
         mToBeDeletedObjList.add(obj);
+    }
+
+    public int checkCollideWithCoins(Car c) {
+        int count = 0;
+        for (Renderable r : mRenderableList) {
+            if (r instanceof Coin) {
+                if (r.collideWith(c)) {
+                    count++;
+                    addToRemoveList(r);
+                }
+            }
+        }
+        return count;
+    }
+
+    public int checkCollideWithObstacle(Car c) {
+        int count = 0;
+        for (Renderable r : mRenderableList) {
+            if (r instanceof Obstacle) {
+                if (r.collideWith(c)) {
+                    count++;
+                    //addToRemoveList(r);
+                }
+            }
+        }
+        return count;
     }
 }

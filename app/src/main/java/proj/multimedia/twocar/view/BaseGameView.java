@@ -119,8 +119,15 @@ public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback 
             Canvas c = mSurfaceHolder.lockCanvas(null);
             mScene.render(c, timeElapsed);
             mSurfaceHolder.unlockCanvasAndPost(c);
+            if (mScene.getGameOver())
+            {
+                resetGame();
+            }
         }
 
+        public void resetGame(){
+            mScene = mSceneManager.createGameScene(getContext());
+        }
         public void unPause() {
             mPause = false;
         }

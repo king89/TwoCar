@@ -24,6 +24,15 @@ public abstract class Renderable {
         this.y = y;
     }
 
+    public boolean collideWith(Renderable obj) {
+        if(this.mRect.bottom > obj.mRect.top && this.mRect.centerX() == obj.mRect.centerX())
+        {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     public abstract void draw(Canvas c);
 
     public void update(double timeElapsed) {

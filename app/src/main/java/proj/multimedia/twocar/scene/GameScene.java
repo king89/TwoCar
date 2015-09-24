@@ -2,9 +2,11 @@ package proj.multimedia.twocar.scene;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -12,6 +14,7 @@ import proj.multimedia.twocar.model.World;
 import proj.multimedia.twocar.model.objects.BackGround;
 import proj.multimedia.twocar.model.objects.Car;
 import proj.multimedia.twocar.model.objects.Coin;
+import proj.multimedia.twocar.model.objects.Obstacle;
 import proj.multimedia.twocar.model.objects.Score;
 import proj.multimedia.twocar.util.ResourcesManager;
 
@@ -24,7 +27,7 @@ public class GameScene extends BaseScene {
     private static final double FPS = 60;
     private static final double MAXTIMEELAPSE = 2;
     private Score mScore;
-    private boolean mIsGameOver;
+
     private Car mLCar, mRCar;
 
     private Coin mCoint;
@@ -73,12 +76,13 @@ public class GameScene extends BaseScene {
     public void render(Canvas c, double timeElapsed) {
         increaseLevel();
         generateObjects(timeElapsed);
-        mWorld.update(timeElapsed);
-        checkGameOver();
+
+        mIsGameOver = checkGameOver();
         if (mIsGameOver) {
             drawGameOver(c);
         } else {
             checkGetScore();
+            mWorld.update(timeElapsed);
             mWorld.draw(c);
         }
     }
@@ -88,10 +92,8 @@ public class GameScene extends BaseScene {
         if (mTimeCountLeft * getSpeed() * FPS > mIntervalFactor * mLCar.getHeight()) {
             if (isCreate(mTimeCountLeft)) {
                 mTimeCountLeft = 0;
-                String rCirclePaht = "gfx/r_circle.png";
-                mCoint = new Coin(mContext, mWorld, mRandom.nextInt(2) + 1, ResourcesManager.getInstance().getBitmapFromAsset(mContext, rCirclePaht));
-                mCoint.setSpeed(getSpeed());
-                mWorld.addRenderableObject(mCoint);
+                int tPos = mRandom.nextInt(2) + 1;
+                generateCoinOrObstacle(tPos);
             }
         } else {
             mTimeCountLeft += timeElapsed;
@@ -101,14 +103,28 @@ public class GameScene extends BaseScene {
         if (mTimeCountRight * getSpeed() * FPS > mIntervalFactor * mLCar.getHeight()) {
             if (isCreate(mTimeCountRight)) {
                 mTimeCountRight = 0;
-                String bCirclePaht = "gfx/b_circle.png";
-                mCoint = new Coin(mContext, mWorld, mRandom.nextInt(2) + 3, ResourcesManager.getInstance().getBitmapFromAsset(mContext, bCirclePaht));
-                mCoint.setSpeed(getSpeed());
-                mWorld.addRenderableObject(mCoint);
+                int tPos = mRandom.nextInt(2) + 3;
+                generateCoinOrObstacle(tPos);
             }
         } else {
             mTimeCountRight += timeElapsed;
         }
+    }
+
+    private void generateCoinOrObstacle(int tPos) {
+        String[] circlePath = new String[]{"gfx/r_circle.png", "gfx/r_circle.png", "gfx/b_circle.png", "gfx/b_circle.png"};
+        String[] rectPath = new String[]{"gfx/r_rect.png", "gfx/r_rect.png", "gfx/b_rect.png", "gfx/b_rect.png"};
+        String useBMP = "";
+        //circle
+        if (mRandom.nextInt(2) == 0) {
+            useBMP = circlePath[tPos - 1];
+            mCoint = new Coin(mContext, mWorld, tPos, ResourcesManager.getInstance().getBitmapFromAsset(mContext, useBMP));
+        } else {
+            useBMP = rectPath[tPos - 1];
+            mCoint = new Obstacle(mContext, mWorld, tPos, ResourcesManager.getInstance().getBitmapFromAsset(mContext, useBMP));
+        }
+        mCoint.setSpeed(getSpeed());
+        mWorld.addRenderableObject(mCoint);
     }
 
     private boolean isCreate(double nowTimeElapsed) {
@@ -125,8 +141,9 @@ public class GameScene extends BaseScene {
     }
 
     private void drawGameOver(Canvas c) {
-
+        //c.drawText("GameOver", 200, 100,new Paint());
     }
+
 
     private void increaseLevel() {
 
@@ -136,8 +153,14 @@ public class GameScene extends BaseScene {
 
     }
 
-    private void checkGameOver() {
+    private boolean checkGameOver() {
+        mScore.addScore(mWorld.checkCollideWithCoins(mLCar));
+        mScore.addScore(mWorld.checkCollideWithCoins(mRCar));
 
+        if (mWorld.checkCollideWithObstacle(mLCar) > 0 || mWorld.checkCollideWithObstacle(mRCar) > 0){
+            return true;
+        }
+        return false;
     }
 
     @Override
