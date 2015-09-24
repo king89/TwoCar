@@ -8,22 +8,28 @@ import android.graphics.Rect;
  * Created by KinG on 9/22/2015.
  */
 public abstract class Renderable {
+
     protected float x;
     protected float y;
     protected Rect mRect;
     protected Context mContext;
 
     public Renderable(Context context) {
-        mContext = context;
+        this(context, 0, 0);
     }
+
     public Renderable(Context context, float x, float y) {
         mContext = context;
         this.x = x;
         this.y = y;
     }
+
     public abstract void draw(Canvas c);
 
-    public void update(double timeElapsed){};
+    public void update(double timeElapsed) {
+    }
+
+    ;
 
     public Rect getmRect() {
         return mRect;

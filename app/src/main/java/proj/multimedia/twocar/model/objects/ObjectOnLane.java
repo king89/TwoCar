@@ -8,40 +8,67 @@ import android.graphics.Rect;
 import android.util.DisplayMetrics;
 
 import proj.multimedia.twocar.model.Renderable;
+import proj.multimedia.twocar.model.World;
 
 /**
  * Created by KinG on 9/22/2015.
  */
 public class ObjectOnLane extends Renderable {
 
+    protected World mWorld;
     protected int mPosition;
     protected float[] POSITION_X;
     protected Bitmap mBm;
     protected int POSITION_Y_TOP;
     protected int POSITION_Y_BOTTOM;
+    protected Paint mPaint;
 
-    public ObjectOnLane(Context context) {
-        this(context, 0, 0);
+    public ObjectOnLane(Context context, World world) {
+        this(context, world, 0, 0);
 
     }
 
-    public ObjectOnLane(Context context, float x, float y) {
+    public ObjectOnLane(Context context, World world, float x, float y) {
         super(context, x, y);
+        mWorld = world;
 
+    }
+
+    protected void delete() {
+        mWorld.addToRemoveList(this);
+    }
+
+    protected Paint getmPaint() {
+        if (mPaint == null) {
+            mPaint = new Paint();
+        }
+        return mPaint;
     }
 
     protected void loadBitmap(Bitmap bm) {
         mBm = bm;
         if (mBm != null) {
             mRect = new Rect(0, 0, mBm.getWidth(), mBm.getHeight());
+            calPostions();
         }
 
     }
 
     @Override
+    public void update(double timeElapsed) {
+        super.update(timeElapsed);
+    }
+
+    @Override
     public void draw(Canvas c) {
         if (mBm != null) {
-            c.drawBitmap(mBm, mRect.left, mRect.top, new Paint());
+            c.drawBitmap(mBm, mRect.left, mRect.top, getmPaint());
+        }
+    }
+
+    protected void checkToDelete() {
+        if (mRect.top > POSITION_Y_BOTTOM) {
+            delete();
         }
     }
 

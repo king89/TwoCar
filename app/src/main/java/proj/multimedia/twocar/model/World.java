@@ -2,6 +2,7 @@ package proj.multimedia.twocar.model;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +16,13 @@ public class World {
 
 
     protected List<Renderable> mRenderableList;
+    protected List<Renderable> mToBeDeletedObjList;
     protected Renderable mBackground;
-
     protected Context mContext;
 
-    public World(Context context){
+    public World(Context context) {
         mContext = context;
+        mToBeDeletedObjList = new ArrayList<>();
     }
 
     public void draw(Canvas c) {
@@ -29,12 +31,16 @@ public class World {
             mBackground.draw(c);
         }
 
+        //Delete objs in to be deleted List
+        toRemoveObjInRemoveList();
+
         //Draw Other objects
         if (mRenderableList != null) {
             for (Renderable r : mRenderableList) {
                 r.draw(c);
             }
         }
+        //Log.i("RenderObj", "Count:" + mRenderableList.size());
     }
 
     public void update(double timeElapsed) {
@@ -51,16 +57,27 @@ public class World {
     }
 
 
-    public void addRenderableObject(Renderable obj){
-        if (mRenderableList == null){
+    public void addRenderableObject(Renderable obj) {
+        if (mRenderableList == null) {
             mRenderableList = new ArrayList<>();
         }
         mRenderableList.add(obj);
     }
 
-    public void removerObject(Renderable obj){
-        if (mRenderableList != null){
+    public void removerObject(Renderable obj) {
+        if (mRenderableList != null) {
             mRenderableList.remove(obj);
         }
+    }
+
+    protected void toRemoveObjInRemoveList() {
+        for (Renderable ojb : mToBeDeletedObjList) {
+            mRenderableList.remove(ojb);
+        }
+        mToBeDeletedObjList.clear();
+    }
+
+    public void addToRemoveList(Renderable obj) {
+        mToBeDeletedObjList.add(obj);
     }
 }

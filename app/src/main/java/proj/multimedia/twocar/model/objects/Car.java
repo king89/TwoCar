@@ -19,22 +19,9 @@ public class Car extends ObjectOnLane {
     private int SPEEDX = 20;
     private int dstPosition;
     private int mSpeed = SPEEDX;
-    private Object lockObj = new Object();
-
-    public int getDstPosition() {
-        synchronized (lockObj) {
-            return dstPosition;
-        }
-    }
-
-    public void setDstPosition(int dstPosition) {
-        synchronized (lockObj) {
-            this.dstPosition = dstPosition;
-        }
-    }
 
     public Car(Context context, Bitmap bm, int position) {
-        super(context);
+        super(context, null);
         loadBitmap(bm);
         calPostions();
         if (mBm != null) {
@@ -75,8 +62,8 @@ public class Car extends ObjectOnLane {
 
     @Override
     public void update(double timeElapsed) {
-        if (!checkReachDestination(dstPosition)){
-            mRect.offset(mSpeed,0);
+        if (!checkReachDestination(dstPosition)) {
+            mRect.offset(mSpeed, 0);
         }
     }
 
@@ -90,5 +77,7 @@ public class Car extends ObjectOnLane {
         }
     }
 
-
+    public int getHeight(){
+        return mBm.getHeight();
+    }
 }
