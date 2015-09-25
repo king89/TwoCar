@@ -21,8 +21,12 @@ public class Score extends Renderable {
     }
 
 
-    public void addScore(int n){
+    public void addScore(int n) {
         mScore += n;
+    }
+
+    public int getmScore() {
+        return mScore;
     }
 
     @Override

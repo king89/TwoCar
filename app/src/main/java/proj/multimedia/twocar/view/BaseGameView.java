@@ -126,7 +126,8 @@ public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback 
         }
 
         public void resetGame(){
-            mScene = mSceneManager.createGameScene(getContext());
+            //mScene = mSceneManager.createGameScene(getContext());
+            //pause();
         }
         public void unPause() {
             mPause = false;

@@ -2,6 +2,7 @@ package proj.multimedia.twocar.scene;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -10,10 +11,12 @@ import android.widget.Toast;
 
 import java.util.Random;
 
+import proj.multimedia.twocar.model.Renderable;
 import proj.multimedia.twocar.model.World;
 import proj.multimedia.twocar.model.objects.BackGround;
 import proj.multimedia.twocar.model.objects.Car;
 import proj.multimedia.twocar.model.objects.Coin;
+import proj.multimedia.twocar.model.objects.ObjectOnLane;
 import proj.multimedia.twocar.model.objects.Obstacle;
 import proj.multimedia.twocar.model.objects.Score;
 import proj.multimedia.twocar.util.ResourcesManager;
@@ -60,7 +63,7 @@ public class GameScene extends BaseScene {
 
     @Override
     protected void createObjcets() {
-        mScore = new Score(mContext, 100, 100, 1);
+        mScore = new Score(mContext, 100, 100, 0);
         mWorld.addRenderableObject(mScore);
 
         String rCarFile = "gfx/r_car.png";
@@ -74,13 +77,13 @@ public class GameScene extends BaseScene {
 
     @Override
     public void render(Canvas c, double timeElapsed) {
-        increaseLevel();
-        generateObjects(timeElapsed);
-
         mIsGameOver = checkGameOver();
         if (mIsGameOver) {
+            mWorld.draw(c);
             drawGameOver(c);
         } else {
+            increaseLevel();
+            generateObjects(timeElapsed);
             checkGetScore();
             mWorld.update(timeElapsed);
             mWorld.draw(c);
@@ -116,15 +119,16 @@ public class GameScene extends BaseScene {
         String[] rectPath = new String[]{"gfx/r_rect.png", "gfx/r_rect.png", "gfx/b_rect.png", "gfx/b_rect.png"};
         String useBMP = "";
         //circle
+        ObjectOnLane ob;
         if (mRandom.nextInt(2) == 0) {
             useBMP = circlePath[tPos - 1];
-            mCoint = new Coin(mContext, mWorld, tPos, ResourcesManager.getInstance().getBitmapFromAsset(mContext, useBMP));
+            ob = new Coin(mContext, mWorld, tPos, ResourcesManager.getInstance().getBitmapFromAsset(mContext, useBMP));
         } else {
             useBMP = rectPath[tPos - 1];
-            mCoint = new Obstacle(mContext, mWorld, tPos, ResourcesManager.getInstance().getBitmapFromAsset(mContext, useBMP));
+            ob = new Obstacle(mContext, mWorld, tPos, ResourcesManager.getInstance().getBitmapFromAsset(mContext, useBMP));
         }
-        mCoint.setSpeed(getSpeed());
-        mWorld.addRenderableObject(mCoint);
+        ob.setSpeed(getSpeed());
+        mWorld.addRenderableObject(ob);
     }
 
     private boolean isCreate(double nowTimeElapsed) {
@@ -141,12 +145,16 @@ public class GameScene extends BaseScene {
     }
 
     private void drawGameOver(Canvas c) {
-        //c.drawText("GameOver", 200, 100,new Paint());
+        Paint p = new Paint();
+        p.setColor(Color.BLUE);
+        p.setTextSize(48);
+        c.drawText("GameOver", 200, 100, p);
     }
 
 
     private void increaseLevel() {
-
+        mSpeed = 15 + (int) (mScore.getmScore() / 10);
+        mIntervalFactor = Math.max(2, 4 - (mScore.getmScore() / 10));
     }
 
     private void checkGetScore() {
@@ -157,7 +165,7 @@ public class GameScene extends BaseScene {
         mScore.addScore(mWorld.checkCollideWithCoins(mLCar));
         mScore.addScore(mWorld.checkCollideWithCoins(mRCar));
 
-        if (mWorld.checkCollideWithObstacle(mLCar) > 0 || mWorld.checkCollideWithObstacle(mRCar) > 0){
+        if (mWorld.checkCollideWithObstacle(mLCar) > 0 || mWorld.checkCollideWithObstacle(mRCar) > 0) {
             return true;
         }
         return false;
@@ -186,7 +194,7 @@ public class GameScene extends BaseScene {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_OUTSIDE:
             case MotionEvent.ACTION_UP:
-                //mScore.addScore(1);
+
                 break;
             default:
         }

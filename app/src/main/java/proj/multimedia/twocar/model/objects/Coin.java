@@ -14,11 +14,8 @@ import proj.multimedia.twocar.model.World;
  * Created by KinG on 9/22/2015.
  */
 public class Coin extends ObjectOnLane {
-    private World mWorld;
-    private int mSpeed;
-
     public Coin(Context context, World world, int position, Bitmap bm) {
-        super(context,world);
+        super(context, world);
         loadBitmap(bm);
         setPosition(position);
         setToStart();
@@ -38,9 +35,5 @@ public class Coin extends ObjectOnLane {
     public void update(double timeElapsed) {
         mRect.offset(0, mSpeed);
         checkToDelete();
-    }
-
-    public void setSpeed(int speed) {
-        mSpeed = speed;
     }
 }

@@ -17,6 +17,7 @@ public class ObjectOnLane extends Renderable {
 
     protected World mWorld;
     protected int mPosition;
+    protected int mSpeed;
     protected float[] POSITION_X;
     protected Bitmap mBm;
     protected int POSITION_Y_TOP;
@@ -97,6 +98,11 @@ public class ObjectOnLane extends Renderable {
             POSITION_Y_TOP = top;
             POSITION_Y_BOTTOM = bottom;
         }
+    }
+
+
+    public void setSpeed(int speed) {
+        mSpeed = speed;
     }
 
     public void setPosition(int position) {
