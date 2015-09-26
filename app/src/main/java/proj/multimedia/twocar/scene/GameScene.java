@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,6 +45,7 @@ public class GameScene extends BaseScene {
 
     public GameScene(Context context) {
         super(context);
+        ResourcesManager.getInstance().playBackgroundMusic(mContext);
     }
 
     @Override
@@ -81,6 +83,7 @@ public class GameScene extends BaseScene {
         if (mIsGameOver) {
             mWorld.draw(c);
             drawGameOver(c);
+
         } else {
             increaseLevel();
             generateObjects(timeElapsed);
@@ -158,14 +161,22 @@ public class GameScene extends BaseScene {
     }
 
     private void checkGetScore() {
-
+        int score = mWorld.checkCollideWithCoins(mLCar);
+        score += mWorld.checkCollideWithCoins(mRCar);
+        mScore.addScore(score);
+        if (score > 0) {
+            ResourcesManager.getInstance().playCollectedCoinSound(mContext);
+        }
     }
 
     private boolean checkGameOver() {
-        mScore.addScore(mWorld.checkCollideWithCoins(mLCar));
-        mScore.addScore(mWorld.checkCollideWithCoins(mRCar));
 
         if (mWorld.checkCollideWithObstacle(mLCar) > 0 || mWorld.checkCollideWithObstacle(mRCar) > 0) {
+            if (!mIsGameOver) {
+                Vibrator v = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(500);
+                ResourcesManager.getInstance().stopBackgroundMusic(mContext);
+            }
             return true;
         }
         return false;
@@ -185,7 +196,12 @@ public class GameScene extends BaseScene {
         switch (actionCode) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
-                checkCarTurn(x);
+                if (mIsGameOver) {
+                    resetGame();
+                    mIsGameOver = false;
+                }else {
+                    checkCarTurn(x);
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 break;
@@ -199,6 +215,14 @@ public class GameScene extends BaseScene {
             default:
         }
         return true; //processed
+    }
+
+    private void resetGame() {
+        createWorld();
+        createBackGround();
+        createObjcets();
+        addObjectsToTheWorld();
+        ResourcesManager.getInstance().playBackgroundMusic(mContext);
     }
 
     private void checkCarTurn(float touched_x) {

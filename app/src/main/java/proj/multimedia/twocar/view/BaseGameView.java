@@ -11,6 +11,7 @@ import android.view.SurfaceView;
 
 import proj.multimedia.twocar.model.World;
 import proj.multimedia.twocar.scene.BaseScene;
+import proj.multimedia.twocar.util.ResourcesManager;
 import proj.multimedia.twocar.util.SceneManager;
 
 /**
@@ -104,6 +105,7 @@ public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback 
 
         public void quit() {
             mQuit = true;
+            ResourcesManager.getInstance().stopBackgroundMusic(getContext());
             try {
                 mThread.join();
             } catch (InterruptedException e) {
