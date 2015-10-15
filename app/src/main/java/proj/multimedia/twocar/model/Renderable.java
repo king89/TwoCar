@@ -2,6 +2,7 @@ package proj.multimedia.twocar.model;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 
 /**
@@ -13,6 +14,7 @@ public abstract class Renderable {
     protected float y;
     protected Rect mRect;
     protected Context mContext;
+    protected Paint mPaint;
 
     public Renderable(Context context) {
         this(context, 0, 0);
@@ -22,6 +24,13 @@ public abstract class Renderable {
         mContext = context;
         this.x = x;
         this.y = y;
+    }
+
+    public Paint getPaint() {
+        if (mPaint == null) {
+            mPaint = new Paint();
+        }
+        return mPaint;
     }
 
     public boolean collideWith(Renderable obj) {
