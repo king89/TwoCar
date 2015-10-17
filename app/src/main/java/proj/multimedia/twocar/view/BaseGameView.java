@@ -3,6 +3,8 @@ package proj.multimedia.twocar.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -11,6 +13,7 @@ import android.view.SurfaceView;
 
 import proj.multimedia.twocar.model.World;
 import proj.multimedia.twocar.scene.BaseScene;
+import proj.multimedia.twocar.scene.GameScene;
 import proj.multimedia.twocar.util.ResourcesManager;
 import proj.multimedia.twocar.util.SceneManager;
 
@@ -19,8 +22,9 @@ import proj.multimedia.twocar.util.SceneManager;
  */
 public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private MainThread mThread;
-    private SceneManager mSceneManager;
+    protected MainThread mThread;
+    protected SceneManager mSceneManager;
+    protected Handler mGameOvoerHandler;
 
     public BaseGameView(Context context) {
         super(context);
@@ -65,12 +69,20 @@ public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback 
         }
     }
 
+    public void restart() {
+        mThread.resetGame();
+    }
+
+    public void setGameOvoerHandler(Handler h) {
+        mGameOvoerHandler = h;
+    }
+
     class MainThread extends Thread {
 
-        private SurfaceHolder mSurfaceHolder;
-        private BaseScene mScene;
-        private boolean mQuit;
-        private boolean mPause;
+        protected SurfaceHolder mSurfaceHolder;
+        protected BaseScene mScene;
+        protected boolean mQuit;
+        protected boolean mPause;
 
         public MainThread(SurfaceHolder holder, BaseScene scene) {
             mSurfaceHolder = holder;
@@ -115,24 +127,40 @@ public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback 
 
         public void pause() {
             mPause = true;
-        }
-
-        private void render(Rect dirty, double timeElapsed) {
-            Canvas c = mSurfaceHolder.lockCanvas(null);
-            mScene.render(c, timeElapsed);
-            mSurfaceHolder.unlockCanvasAndPost(c);
-            if (mScene.getGameOver())
-            {
-                resetGame();
+            if (mScene.getGameState() != BaseScene.GameState.GAMEOVER) {
+                mScene.setGameState(BaseScene.GameState.PAUSE);
             }
         }
 
-        public void resetGame(){
-            //mScene = mSceneManager.createGameScene(getContext());
+        protected void render(Rect dirty, double timeElapsed) {
+            Canvas c = mSurfaceHolder.lockCanvas(null);
+            mScene.render(c, timeElapsed);
+            mSurfaceHolder.unlockCanvasAndPost(c);
+            if (mScene.getGameOver()) {
+                gameOver();
+            }
+        }
+
+        public void gameOver() {
+            Message ms = new Message();
+            ms.what = 0;
+            ms.obj = ((GameScene) mScene).getScore();
+            if (mGameOvoerHandler != null) {
+                mGameOvoerHandler.sendMessage(ms);
+            }
+        }
+
+        public void resetGame() {
+            mScene = mSceneManager.createGameScene(getContext());
+            mPause = false;
             //pause();
         }
+
         public void unPause() {
             mPause = false;
+            if (mScene.getGameState() != BaseScene.GameState.GAMEOVER) {
+                mScene.setGameState(BaseScene.GameState.RUNNING);
+            }
         }
     }
 }

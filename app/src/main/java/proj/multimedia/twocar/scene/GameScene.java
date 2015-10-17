@@ -148,10 +148,10 @@ public class GameScene extends BaseScene {
     }
 
     private void drawGameOver(Canvas c) {
-        Paint p = new Paint();
-        p.setColor(Color.BLUE);
-        p.setTextSize(48);
-        c.drawText("GameOver", 200, 100, p);
+//        Paint p = new Paint();
+//        p.setColor(Color.BLUE);
+//        p.setTextSize(48);
+//        c.drawText("GameOver", 200, 100, p);
     }
 
 
@@ -172,10 +172,11 @@ public class GameScene extends BaseScene {
     private boolean checkGameOver() {
 
         if (mWorld.checkCollideWithObstacle(mLCar) > 0 || mWorld.checkCollideWithObstacle(mRCar) > 0) {
-            if (!mIsGameOver) {
+            if (!mIsGameOver && getGameState() == GameState.RUNNING) {
                 Vibrator v = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(500);
                 ResourcesManager.getInstance().stopBackgroundMusic(mContext);
+                setGameState(GameState.GAMEOVER);
             }
             return true;
         }
@@ -184,45 +185,51 @@ public class GameScene extends BaseScene {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (getGameState() == GameState.RUNNING) {
+            int action = event.getAction();
+            int actionCode = action & MotionEvent.ACTION_MASK;
+            int pid = (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+            int fingerid = event.getPointerId(pid);
 
-        int action = event.getAction();
-        int actionCode = action & MotionEvent.ACTION_MASK;
-        int pid = (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
-        int fingerid = event.getPointerId(pid);
+            int x = (int) event.getX(pid);
+            int y = (int) event.getY(pid);
 
-        int x = (int) event.getX(pid);
-        int y = (int) event.getY(pid);
+            switch (actionCode) {
+                case MotionEvent.ACTION_DOWN:
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    if (mIsGameOver) {
+                        //resetGame();
+                        mIsGameOver = false;
+                    } else {
+                        checkCarTurn(x);
+                    }
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    break;
 
-        switch (actionCode) {
-            case MotionEvent.ACTION_DOWN:
-            case MotionEvent.ACTION_POINTER_DOWN:
-                if (mIsGameOver) {
-                    resetGame();
-                    mIsGameOver = false;
-                }else {
-                    checkCarTurn(x);
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                break;
+                case MotionEvent.ACTION_POINTER_UP:
+                case MotionEvent.ACTION_CANCEL:
+                case MotionEvent.ACTION_OUTSIDE:
+                case MotionEvent.ACTION_UP:
 
-            case MotionEvent.ACTION_POINTER_UP:
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_OUTSIDE:
-            case MotionEvent.ACTION_UP:
-
-                break;
-            default:
+                    break;
+                default:
+            }
         }
         return true; //processed
     }
 
-    private void resetGame() {
+    @Override
+    public void resetGame() {
         createWorld();
         createBackGround();
         createObjcets();
         addObjectsToTheWorld();
         ResourcesManager.getInstance().playBackgroundMusic(mContext);
+    }
+
+    public int getScore(){
+        return mScore.getmScore();
     }
 
     private void checkCarTurn(float touched_x) {

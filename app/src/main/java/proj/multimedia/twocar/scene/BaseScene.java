@@ -17,15 +17,31 @@ public abstract class BaseScene {
     protected SceneManager.SceneType mSceneType;
     protected Context mContext;
     protected boolean mIsGameOver;
+    protected GameState mGameState;
 
     public BaseScene(Context context) {
         mContext = context;
+        setGameState(GameState.RUNNING);
         createWorld();
         createBackGround();
         createObjcets();
         addObjectsToTheWorld();
     }
 
+    public void setGameState(GameState s){
+        mGameState = s;
+    }
+
+    public GameState getGameState(){
+        return mGameState;
+    }
+    public enum GameState{
+        RUNNING,
+        PAUSE,
+        GAMEOVER,
+    }
+
+    public void resetGame(){}
     public boolean getGameOver(){
         return mIsGameOver;
     }
