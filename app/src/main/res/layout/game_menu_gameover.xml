@@ -27,7 +27,6 @@
             android:id="@+id/resumeButton"
             android:src="@mipmap/ic_play_arrow_white"
             android:scaleType="fitCenter"
-            android:background="#0000ff"
             android:layout_margin="5dp"/>
 
         <ImageButton
@@ -36,7 +35,6 @@
             android:id="@+id/restartButton"
             android:src="@mipmap/ic_replay_white"
             android:scaleType="fitCenter"
-            android:background="#0000ff"
             android:layout_margin="5dp"/>
 
         <ImageButton
@@ -45,7 +43,6 @@
             android:id="@+id/homeButton"
             android:src="@mipmap/ic_home_white"
             android:scaleType="fitCenter"
-            android:background="#0000ff"
             android:layout_margin="5dp"/>
     </LinearLayout>
 </LinearLayout>
