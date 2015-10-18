@@ -25,21 +25,27 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/resumeButton"
-            android:src="@drawable/abc_ic_clear_mtrl_alpha"
-            android:scaleType="fitCenter"/>
+            android:src="@mipmap/ic_play_arrow_white"
+            android:scaleType="fitCenter"
+            android:background="#0000ff"
+            android:layout_margin="5dp"/>
 
         <ImageButton
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/restartButton"
-            android:src="@drawable/abc_ic_clear_mtrl_alpha"
-            android:scaleType="fitCenter"/>
+            android:src="@mipmap/ic_replay_white"
+            android:scaleType="fitCenter"
+            android:background="#0000ff"
+            android:layout_margin="5dp"/>
 
         <ImageButton
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/homeButton"
-            android:src="@drawable/abc_ic_clear_mtrl_alpha"
-            android:scaleType="fitCenter"/>
+            android:src="@mipmap/ic_home_white"
+            android:scaleType="fitCenter"
+            android:background="#0000ff"
+            android:layout_margin="5dp"/>
     </LinearLayout>
 </LinearLayout>
