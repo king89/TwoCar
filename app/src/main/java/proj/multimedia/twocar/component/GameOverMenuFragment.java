@@ -13,12 +13,13 @@ import proj.multimedia.twocar.R;
  * Created by KinG on 10/17/2015.
  */
 public class GameOverMenuFragment extends GamePauseMenuFragment {
-
+    @Nullable
     @Override
-    protected View initialView(View view) {
-        View v = super.initialView(view);
-        resumeBt.setVisibility(View.GONE);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.game_menu_gameover, container, false);
+        view = initialView(view);
         tv.setText("GameOver");
-        return v;
+        resumeBt.setVisibility(View.GONE);
+        return view;
     }
 }

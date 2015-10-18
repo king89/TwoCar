@@ -55,7 +55,10 @@ public class GameActivity extends BaseActivity {
         @Override
         public void restart() {
             mView.restart();
+            currFrame = new GamePauseMenuFragment();
+            currFrame.setMenuCallBack(gameMenuCallBack);
             menuLayout.setVisibility(View.INVISIBLE);
+            getSupportFragmentManager().beginTransaction().replace(R.id.menuContainer,currFrame ).commit();
         }
 
         @Override
@@ -114,15 +117,14 @@ public class GameActivity extends BaseActivity {
         super.onPause();
         if (mView != null) {
             mView.pause();
+            bt.performClick();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (mView != null) {
-            mView.resume();
-        }
+
     }
 
 
