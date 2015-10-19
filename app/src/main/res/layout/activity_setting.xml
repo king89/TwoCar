@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/okButton"
-        android:src="@mipmap/set_ok"
+        android:src="@mipmap/setting_ok"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/vibrate"
         android:layout_toStartOf="@+id/vibrate" />
