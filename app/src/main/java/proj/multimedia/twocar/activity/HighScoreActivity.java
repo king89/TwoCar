@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import proj.multimedia.twocar.R;
 
-public class HighScoreActivity extends AppCompatActivity {
+public class HighScoreActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

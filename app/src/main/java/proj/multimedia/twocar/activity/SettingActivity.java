@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import proj.multimedia.twocar.R;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
