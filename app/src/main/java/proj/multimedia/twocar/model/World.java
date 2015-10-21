@@ -29,13 +29,13 @@ public class World {
     }
 
     public void draw(Canvas c) {
+        //Delete objs in to be deleted List
+        toRemoveObjInRemoveList();
+
         //Draw Background
         if (mBackground != null) {
             mBackground.draw(c);
         }
-
-        //Delete objs in to be deleted List
-        toRemoveObjInRemoveList();
 
         //Draw Other objects
         if (mRenderableList != null) {

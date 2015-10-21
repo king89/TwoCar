@@ -66,18 +66,22 @@ public class ResourcesManager {
     }
 
     public void playCollectedCoinSound(Context context) {
-        getSoundPool(context);
-        if (isSoundLoaded) {
-            float lVolunm = 1;
-            float rVolunm = 1;
-            getSoundPool(context).play(soundId, lVolunm, rVolunm, 1, 0, 1);
+        if (SettingManager.getInstance().getSoundState(context)) {
+            getSoundPool(context);
+            if (isSoundLoaded) {
+                float lVolunm = 1;
+                float rVolunm = 1;
+                getSoundPool(context).play(soundId, lVolunm, rVolunm, 1, 0, 1);
+            }
         }
     }
 
     public void playBackgroundMusic(Context context) {
-        MediaPlayer mp = getMediaPlayer(context);
-        if (!mp.isPlaying()) {
-            mp.start();
+        if (SettingManager.getInstance().getMusicState(context)) {
+            MediaPlayer mp = getMediaPlayer(context);
+            if (!mp.isPlaying()) {
+                mp.start();
+            }
         }
     }
 
@@ -89,7 +93,7 @@ public class ResourcesManager {
         }
     }
 
-    public void releaseBackgroundMusic(Context context){
+    public void releaseBackgroundMusic(Context context) {
         mMediaPlayer.release();
         mMediaPlayer = null;
     }

@@ -8,6 +8,7 @@ import android.view.SurfaceHolder;
 import proj.multimedia.twocar.model.World;
 import proj.multimedia.twocar.util.ResourcesManager;
 import proj.multimedia.twocar.util.SceneManager;
+import proj.multimedia.twocar.util.SettingManager;
 
 /**
  * Created by KinG on 9/22/2015.
@@ -18,9 +19,10 @@ public abstract class BaseScene {
     protected Context mContext;
     protected boolean mIsGameOver;
     protected GameState mGameState;
-
+    protected SettingManager mSettingManager;
     public BaseScene(Context context) {
         mContext = context;
+        mSettingManager = SettingManager.getInstance();
         setGameState(GameState.RUNNING);
         createWorld();
         createBackGround();

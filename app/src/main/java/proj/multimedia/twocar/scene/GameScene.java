@@ -21,6 +21,7 @@ import proj.multimedia.twocar.model.objects.ObjectOnLane;
 import proj.multimedia.twocar.model.objects.Obstacle;
 import proj.multimedia.twocar.model.objects.Score;
 import proj.multimedia.twocar.util.ResourcesManager;
+import proj.multimedia.twocar.util.SettingManager;
 
 /**
  * Created by KinG on 9/22/2015.
@@ -173,10 +174,19 @@ public class GameScene extends BaseScene {
 
         if (mWorld.checkCollideWithObstacle(mLCar) > 0 || mWorld.checkCollideWithObstacle(mRCar) > 0) {
             if (!mIsGameOver && getGameState() == GameState.RUNNING) {
-                Vibrator v = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(500);
+                if (mSettingManager.getVibrateState(mContext)) {
+                    Vibrator v = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+                    v.vibrate(500);
+                }
                 ResourcesManager.getInstance().stopBackgroundMusic(mContext);
                 setGameState(GameState.GAMEOVER);
+
+                //save high score
+                int highScore = SettingManager.getInstance().getHighScore(mContext);
+                if (highScore < mScore.getmScore()) {
+                    highScore = mScore.getmScore();
+                    SettingManager.getInstance().setHighScore(mContext, highScore);
+                }
             }
             return true;
         }
@@ -228,7 +238,7 @@ public class GameScene extends BaseScene {
         ResourcesManager.getInstance().playBackgroundMusic(mContext);
     }
 
-    public int getScore(){
+    public int getScore() {
         return mScore.getmScore();
     }
 

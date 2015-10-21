@@ -16,6 +16,7 @@ import proj.multimedia.twocar.R;
 import proj.multimedia.twocar.component.BaseGameMenuFragment;
 import proj.multimedia.twocar.component.GameOverMenuFragment;
 import proj.multimedia.twocar.component.GamePauseMenuFragment;
+import proj.multimedia.twocar.util.SceneManager;
 import proj.multimedia.twocar.view.BaseGameView;
 import proj.multimedia.twocar.util.ResourcesManager;
 
@@ -77,7 +78,6 @@ public class GameActivity extends BaseActivity {
         RelativeLayout rl = (RelativeLayout) findViewById(R.id.container);
         menuLayout = (FrameLayout) findViewById(R.id.menuContainer);
         menuLayout.setVisibility(View.INVISIBLE);
-
         rl.addView(mView);
 
         bt = (Button) findViewById(R.id.button);
@@ -89,22 +89,6 @@ public class GameActivity extends BaseActivity {
             }
         });
 
-//        resumeBt.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mView.resume();
-//                menuLayout.setVisibility(View.INVISIBLE);
-//            }
-//        });
-//
-//        backHomeBt.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mView.restart();
-//                menuLayout.setVisibility(View.INVISIBLE);
-//            }
-//        });
-        //menuLayout.removeAllViews();
         FragmentManager fm = getSupportFragmentManager();
         currFrame = new GamePauseMenuFragment();
         currFrame.setMenuCallBack(gameMenuCallBack);

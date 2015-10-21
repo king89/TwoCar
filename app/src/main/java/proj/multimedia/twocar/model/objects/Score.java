@@ -18,6 +18,9 @@ public class Score extends Renderable {
         this.x = x;
         this.y = y;
         this.mScore = score;
+        mPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setTextSize(48f);
+        mPaint.setColor(Color.RED);
     }
 
 
@@ -31,9 +34,6 @@ public class Score extends Renderable {
 
     @Override
     public void draw(Canvas c) {
-        Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-        p.setTextSize(48f);
-        p.setColor(Color.RED);
-        c.drawText(mScore + "", getX(), getY(), p);
+        c.drawText(mScore + "", getX(), getY(), mPaint);
     }
 }

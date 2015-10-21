@@ -10,7 +10,7 @@ import proj.multimedia.twocar.scene.GameScene;
  */
 public class SceneManager {
     private static final SceneManager INSTANCE = new SceneManager();
-
+    private SceneManager(){}
     private SceneType currentSceneType = SceneType.SCENE_GAME;
     private BaseScene currentScene;
 

@@ -9,71 +9,90 @@ import android.widget.Toast;
 
 import proj.multimedia.twocar.R;
 import proj.multimedia.twocar.model.controls.ImageButton;
+import proj.multimedia.twocar.util.SettingManager;
 
 public class SettingActivity extends BaseActivity {
 
     private boolean vibrateChange;
     private boolean soundChange;
     private boolean musicChange;
+    private SettingManager mSettingManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        mSettingManager = SettingManager.getInstance();
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupNavigationButton();
         configureImageButton();
+
     }
 
     private void configureImageButton() {
         final android.widget.ImageButton vibrateButton = (android.widget.ImageButton) findViewById(R.id.vibrate);
         vibrateButton.setBackgroundResource(R.mipmap.vibrate);
-        vibrateChange = false;
+        vibrateChange = mSettingManager.getVibrateState(this);
+        setVibrateImage(vibrateButton);
         vibrateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (vibrateChange) {
-                    vibrateButton.setImageResource(R.mipmap.vibrate);
-                    vibrateChange = false;
-                } else {
-                    vibrateButton.setImageResource(R.mipmap.vibrate_close);
-                    vibrateChange = true;
-                }
+                vibrateChange = !vibrateChange;
+                setVibrateImage(vibrateButton);
+                mSettingManager.setVibrateState(SettingActivity.this, vibrateChange);
             }
         });
 
-        final android.widget.ImageButton soundButton =(android.widget.ImageButton) findViewById(R.id.sound);
+        final android.widget.ImageButton soundButton = (android.widget.ImageButton) findViewById(R.id.sound);
         soundButton.setBackgroundResource(R.mipmap.sound);
-        soundChange = false;
-        soundButton.setOnClickListener(new View.OnClickListener(){
+        soundChange = mSettingManager.getSoundState(this);
+        setSoundImage(soundButton);
+        soundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (soundChange) {
-                    soundButton.setImageResource(R.mipmap.sound);
-                    soundChange = false;
-                } else {
-                    soundButton.setImageResource(R.mipmap.soud_close);
-                    soundChange = true;
-                }
+                soundChange = !soundChange;
+                setSoundImage(soundButton);
+                mSettingManager.setSoundState(SettingActivity.this, soundChange);
             }
         });
 
-        final android.widget.ImageButton musicButton =(android.widget.ImageButton) findViewById(R.id.music);
+        final android.widget.ImageButton musicButton = (android.widget.ImageButton) findViewById(R.id.music);
         soundButton.setBackgroundResource(R.mipmap.music);
-        musicChange = false;
-        musicButton.setOnClickListener(new View.OnClickListener(){
+        musicChange = mSettingManager.getMusicState(this);
+        setMusicImage(musicButton);
+        musicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (musicChange) {
-                    musicButton.setImageResource(R.mipmap.music);
-                    musicChange = false;
-                } else {
-                    musicButton.setImageResource(R.mipmap.music_close);
-                    musicChange = true;
-                }
+                musicChange = !musicChange;
+                setMusicImage(musicButton);
+                mSettingManager.setMusicState(SettingActivity.this, musicChange);
             }
         });
+    }
+
+    private void setMusicImage(android.widget.ImageButton musicButton) {
+        if (musicChange) {
+            musicButton.setImageResource(R.mipmap.music);
+        } else {
+            musicButton.setImageResource(R.mipmap.music_close);
+        }
+    }
+
+    private void setSoundImage(android.widget.ImageButton soundButton) {
+        if (soundChange) {
+            soundButton.setImageResource(R.mipmap.sound);
+        } else {
+            soundButton.setImageResource(R.mipmap.soud_close);
+        }
+    }
+
+    private void setVibrateImage(android.widget.ImageButton vibrateButton) {
+        if (vibrateChange) {
+            vibrateButton.setImageResource(R.mipmap.vibrate);
+        } else {
+            vibrateButton.setImageResource(R.mipmap.vibrate_close);
+        }
     }
 
     private void setupNavigationButton() {

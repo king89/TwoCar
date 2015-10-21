@@ -5,4 +5,8 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_setting">Settings</string>
     <string name="title_activity_high_score">HighScore</string>
+    <string name="pref_key_highscore">pref_key_highscore</string>
+    <string name="pref_key_music_state">pref_key_music_state</string>
+    <string name="pref_key_sound_state">pref_key_sound_state</string>
+    <string name="pref_key_vibrate_state">pref_key_vibrate_state</string>
 </resources>

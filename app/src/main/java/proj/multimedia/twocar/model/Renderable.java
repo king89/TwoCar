@@ -24,6 +24,7 @@ public abstract class Renderable {
         mContext = context;
         this.x = x;
         this.y = y;
+        getPaint();
     }
 
     public Paint getPaint() {

@@ -14,6 +14,8 @@ import proj.multimedia.twocar.model.Renderable;
 public class BackGround extends Renderable {
     public BackGround(Context context) {
         super(context);
+        mPaint.setStrokeWidth(2);
+        mPaint.setColor(Color.WHITE);
     }
 
     @Override
@@ -26,12 +28,9 @@ public class BackGround extends Renderable {
         float startPointX2 = (int) (DeviceTotalWidth / 2.0f);
         float startPointX3 = (int) (DeviceTotalWidth / 4.0f * 3.0f);
 
-        Paint p = new Paint();
-        p.setStrokeWidth(2);
-        p.setColor(Color.WHITE);
-        c.drawLine(startPointX1, 0, startPointX1, DeviceTotalHeight, p);
-        c.drawLine(startPointX3, 0, startPointX3, DeviceTotalHeight, p);
-        p.setStrokeWidth(4);
-        c.drawLine(startPointX2, 0, startPointX2, DeviceTotalHeight, p);
+        c.drawLine(startPointX1, 0, startPointX1, DeviceTotalHeight, mPaint);
+        c.drawLine(startPointX3, 0, startPointX3, DeviceTotalHeight, mPaint);
+        mPaint.setStrokeWidth(4);
+        c.drawLine(startPointX2, 0, startPointX2, DeviceTotalHeight, mPaint);
     }
 }
