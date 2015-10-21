@@ -11,7 +11,7 @@ import proj.multimedia.twocar.R;
  */
 public class SettingManager {
     private static final SettingManager INSTANCE = new SettingManager();
-
+    private int mScore = 0;
     private SettingManager() {
     }
 
@@ -29,6 +29,14 @@ public class SettingManager {
     public int getHighScore(Context context) {
         SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(context);
         return s.getInt(context.getString(R.string.pref_key_highscore), 0);
+    }
+    //now score
+    public void setScore(int score) {
+        mScore = score;
+    }
+
+    public int getScore() {
+        return mScore;
     }
 
     //music state

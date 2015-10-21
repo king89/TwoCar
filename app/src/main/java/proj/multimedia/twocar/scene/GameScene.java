@@ -187,6 +187,8 @@ public class GameScene extends BaseScene {
                     highScore = mScore.getmScore();
                     SettingManager.getInstance().setHighScore(mContext, highScore);
                 }
+                //save score
+                SettingManager.getInstance().setScore(mScore.getmScore());
             }
             return true;
         }

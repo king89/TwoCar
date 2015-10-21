@@ -3,7 +3,8 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:weightSum="1">
+              android:weightSum="1"
+              android:visibility="visible">
 
     <TextView
         android:layout_width="wrap_content"
@@ -13,7 +14,20 @@
         android:id="@+id/text"
         android:textColor="#ff0000"
         android:textSize="34dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text\ndasdf"
+        android:id="@+id/scoreTextView"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:textColor="#0f4899"
+        android:textSize="20dp"
+        android:textAlignment="center"/>
 
     <LinearLayout
         android:orientation="horizontal"
