@@ -6,19 +6,30 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import proj.multimedia.twocar.R;
+import proj.multimedia.twocar.util.SettingManager;
 
 public class HighScoreActivity extends BaseActivity {
+
+    private TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
-        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        tv = (TextView) findViewById(R.id.scoreRecord);
+        setupHighScoreText();
         setupNavigationButton();
+    }
+
+    private void setupHighScoreText() {
+
+        int highScore = SettingManager.getInstance().getHighScore(this);
+        tv.setText(highScore + "");
     }
 
     private void setupNavigationButton() {
@@ -27,6 +38,7 @@ public class HighScoreActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HighScoreActivity.this, GameActivity.class));
+                finish();
             }
         });
 
@@ -35,6 +47,15 @@ public class HighScoreActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        ImageButton resetButton = (ImageButton) findViewById(R.id.resetButton);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingManager.getInstance().setHighScore(HighScoreActivity.this, 0);
+                setupHighScoreText();
             }
         });
     }
