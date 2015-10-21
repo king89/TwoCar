@@ -1,9 +1,11 @@
 package proj.multimedia.twocar.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import proj.multimedia.twocar.R;
@@ -16,6 +18,25 @@ public class HighScoreActivity extends BaseActivity {
         setContentView(R.layout.activity_high_score);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupNavigationButton();
+    }
+
+    private void setupNavigationButton() {
+        android.widget.ImageButton againButton = (android.widget.ImageButton) findViewById(R.id.againButton);
+        againButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HighScoreActivity.this, GameActivity.class));
+            }
+        });
+
+        android.widget.ImageButton exitButton = (android.widget.ImageButton) findViewById(R.id.exitButton);
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
