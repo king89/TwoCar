@@ -1,11 +1,19 @@
 package proj.multimedia.twocar.scene;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.hardware.TriggerEvent;
+import android.hardware.TriggerEventListener;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -26,11 +34,12 @@ import proj.multimedia.twocar.util.SettingManager;
 /**
  * Created by KinG on 9/22/2015.
  */
-public class GameScene extends BaseScene {
+public class GameScene extends BaseScene implements SensorEventListener {
 
 
     private static final double FPS = 60;
     private static final double MAXTIMEELAPSE = 2;
+    public static final int SPEED_CONDISION_LIMIT = -3;
     private Score mScore;
 
     private Car mLCar, mRCar;
@@ -40,13 +49,25 @@ public class GameScene extends BaseScene {
     private double mTimeCountLeft = 0;
     private double mTimeCountRight = 0;
     private int mSpeed = 15;
+    private int mInitSpeed = 15;
+    private int mAccelerateSpeed = 0;
     private double mIntervalFactor = 3.5;
 
     private Random mRandom = new Random();
 
+    Sensor mGyroSensor;
+    SensorManager mSensorManager;
+    private static final float NS2S = 1.0f / 1000000000.0f;
+    private final float[] deltaRotationVector = new float[4];
+    private float timestamp;
+
     public GameScene(Context context) {
         super(context);
         ResourcesManager.getInstance().playBackgroundMusic(mContext);
+        mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        mGyroSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+
+        mSensorManager.registerListener(this, mGyroSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -89,7 +110,7 @@ public class GameScene extends BaseScene {
             increaseLevel();
             generateObjects(timeElapsed);
             checkGetScore();
-            mWorld.update(timeElapsed);
+            mWorld.update(timeElapsed, getSpeed());
             mWorld.draw(c);
         }
     }
@@ -157,7 +178,7 @@ public class GameScene extends BaseScene {
 
 
     private void increaseLevel() {
-        mSpeed = 15 + (int) (mScore.getmScore() / 10);
+        mSpeed = mInitSpeed + (int) (mScore.getmScore() / 10) + mAccelerateSpeed;
         mIntervalFactor = Math.max(2, 4 - (mScore.getmScore() / 10));
     }
 
@@ -252,5 +273,25 @@ public class GameScene extends BaseScene {
         } else {
             mLCar.turn();
         }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("\nx: " + event.values[0]);
+//        sb.append("\ny: " + event.values[1]);
+//        sb.append("\nz: " + event.values[2]);
+//        Log.i("SensorEvent",sb.toString());
+
+        if (event.values[1] < SPEED_CONDISION_LIMIT) {
+            mAccelerateSpeed = 10;
+        } else {
+            mAccelerateSpeed = 0;
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }

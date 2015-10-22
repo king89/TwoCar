@@ -10,6 +10,7 @@ import java.util.List;
 import proj.multimedia.twocar.model.objects.BackGround;
 import proj.multimedia.twocar.model.objects.Car;
 import proj.multimedia.twocar.model.objects.Coin;
+import proj.multimedia.twocar.model.objects.ObjectOnLane;
 import proj.multimedia.twocar.model.objects.Obstacle;
 
 /**
@@ -46,10 +47,17 @@ public class World {
         //Log.i("RenderObj", "Count:" + mRenderableList.size());
     }
 
-    public void update(double timeElapsed) {
+    public void update(double timeElapsed){
+        update(timeElapsed,-1);
+    }
+    public void update(double timeElapsed, int speed) {
         //Draw Other objects
         if (mRenderableList != null) {
             for (Renderable r : mRenderableList) {
+                if (r instanceof ObjectOnLane && speed > 0)
+                {
+                    ((ObjectOnLane)r).setSpeed(speed);
+                }
                 r.update(timeElapsed);
             }
         }
