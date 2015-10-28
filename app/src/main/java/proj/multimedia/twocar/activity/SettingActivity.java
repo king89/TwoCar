@@ -83,7 +83,7 @@ public class SettingActivity extends BaseActivity {
         if (soundChange) {
             soundButton.setImageResource(R.mipmap.sound);
         } else {
-            soundButton.setImageResource(R.mipmap.soud_close);
+            soundButton.setImageResource(R.mipmap.sound_close);
         }
     }
 
