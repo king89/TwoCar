@@ -44,12 +44,11 @@
         android:layout_centerVertical="true" />
 
     <ImageButton
-        android:layout_width="wrap_content"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:id="@+id/okButton"
-        android:src="@mipmap/setting_ok"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/vibrate"
-        android:layout_toStartOf="@+id/vibrate" />
+        android:layout_toStartOf="@+id/vibrate"
+        android:background="@mipmap/setting_ok" />
 
 </RelativeLayout>

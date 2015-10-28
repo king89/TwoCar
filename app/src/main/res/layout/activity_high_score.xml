@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
             android:src="@mipmap/hs"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
@@ -43,7 +43,8 @@
             android:gravity="center"
             android:background="@mipmap/hscore"
             android:layout_above="@+id/linearLayout2"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp" />
 
     </LinearLayout>
 
@@ -61,7 +62,8 @@
             android:id="@+id/resetButton"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:background="@mipmap/reset" />
+            android:background="@mipmap/reset"
+            android:layout_marginTop="80dp" />
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -69,7 +71,8 @@
             android:id="@+id/againButton"
             android:layout_below="@+id/resetButton"
             android:layout_centerHorizontal="true"
-            android:background="@mipmap/tryagain" />
+            android:background="@mipmap/tryagain"
+            android:layout_marginTop="30dp" />
     </LinearLayout>
 
 </RelativeLayout>
